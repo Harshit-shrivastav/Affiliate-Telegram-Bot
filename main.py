@@ -6,6 +6,7 @@ import asyncio
 from os import environ, getenv
 import logging
 from telethon.sessions import StringSession
+from config import AUTH_USER_ID, API_ID, API_HASH, BOT_TOKEN, CHAT_ID, AMAZON_AFFILIATE_TAG, FLIPKART_AFFILIATE_TAG, CAPTION, SESSION, FROM_CHAT_IDS, TO_CHAT_ID
 
 logging.basicConfig(
     level=logging.INFO, format="[%(levelname)s] %(asctime)s - %(message)s"
@@ -13,26 +14,10 @@ logging.basicConfig(
 log = logging.getLogger("AffiliateBot")
 log.info("\n\nStarting...\n")
 
-# Global variables
-AUTH_USER_ID = int(os.environ.get("AUTH_USER_ID", "5979279455"))
-API_ID = int(os.environ.get("API_ID", "4680197"))
-API_HASH = os.environ.get("API_HASH", "495b0228624028d635bd748b22985f67")
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "6186291688:AAFVfMLORpFh9O3v9IKrbo1G7ljV6ncLbOM")
-CHAT_ID = int(os.environ.get("CHAT_ID", "-1001415884998"))
-AMAZON_AFFILIATE_TAG = os.environ.get("AMAZON_AFFILIATE_TAG", "digideals06-21")
-FLIPKART_AFFILIATE_TAG = os.environ.get("FLIPKART_AFFILIATE_TAG", "")
-CAPTION = os.environ.get("CAPTION", "**🔥 @DigiDealz**")
-SESSION = os.environ.get("SESSION", "")
-FROM_CHAT_IDS = list(map(int, getenv("FROM_CHAT_IDS", "-1001315464303 -1001420742409 -1001241952303").split()))
-TO_CHAT_ID = int(os.environ.get("TO_CHAT_ID", "1538581563"))
-
-# Instance for redis database
 db = Redis('AffiliateBot.db', decode_responses=True)
 
-# client for bot
 client = TelegramClient('affiliateBot', API_ID, API_HASH)
 
-# userbot client for userbot
 userbot = ''
 if SESSION:
     try:
@@ -49,14 +34,13 @@ def expand_url(url):
     response = requests.head(url, allow_redirects=True)
     return response.url
 
-# start message handler
+
 @client.on(events.NewMessage(incoming=True, from_users=AUTH_USER_ID, pattern='/start'))
 async def start_handler(event):
     await event.reply(
         "Welcome to the Affiliate Bot!\n\nThis bot can generate Amazon and Flipkart affiliate links for you. Just send any message that contains an Amazon or Flipkart URL, and the bot will reply with the affiliate link."
     )
 
-# incoming message handler
 @client.on(events.NewMessage(incoming=True, from_users=AUTH_USER_ID))
 async def handle_message(event):
     message = event.message.message
@@ -101,8 +85,6 @@ async def handle_message(event):
                 if match_:
                     product_id = match_.group(1)
                     db.set('flipkart', product_id)
-
-    # Check if the product ID matches the stored IDs
     product_id = None
     if 'amazon' in reply_message:
         match = re.search(r"/dp/([A-Z0-9]{10})", affiliate_url)
@@ -145,8 +127,7 @@ if SESSION:
             except Exception as e:
                 print(e)
 
-print('Affiliate Bot started. Written by Harshit Shrivastav.')
 client.start(bot_token=BOT_TOKEN)
+client.run_until_disconnected()
 if SESSION:
     userbot.run_until_disconnected()
-client.run_until_disconnected()
