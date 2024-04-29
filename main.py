@@ -55,36 +55,38 @@ async def handle_message(event):
                 expanded_url = expand_url(url)
             else:
                 expanded_url = url
-            if 'amazon' in expanded_url:
-                if 'tag=' in expanded_url:
-                    affiliate_url = re.sub(r'tag=[^&]*', f'tag={AMAZON_AFFILIATE_TAG}', expanded_url)
-                else:
-                    affiliate_url = f'{expanded_url}&tag={AMAZON_AFFILIATE_TAG}'
-                match = re.search(r"(https?://[^\s]+)", message)
-                if match:
-                    link = match.group(1)
-                    preceding_text = message[:match.start()]
-                    following_text = message[match.end():]
-                    reply_message += f"{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION if CAPTION else ''}"
-                match_ = re.search(r"/dp/([A-Z0-9]{10})", affiliate_url)
-                if match_:
-                     product_id = match_.group(1)
-                     db.set('amazon', product_id)
-            elif 'flipkart' in expanded_url:
-                if 'affid=' in expanded_url:
-                    affiliate_url = re.sub(r'affid=[^&]*', f'affid={FLIPKART_AFFILIATE_TAG}', expanded_url)
-                else:
-                    affiliate_url = f'{expanded_url}&affid={FLIPKART_AFFILIATE_TAG}'
-                match = re.search(r"(https?://[^\s]+)", message)
-                if match:
-                    link = match.group(1)
-                    preceding_text = message[:match.start()]
-                    following_text = message[match.end():]
-                    reply_message += f"{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION if CAPTION else ''}"
-                match_ = re.search(r"/p/([a-zA-Z0-9]+)", affiliate_url)
-                if match_:
-                    product_id = match_.group(1)
-                    db.set('flipkart', product_id)
+            if AMAZON_AFFILIATE_TAG:
+                if 'amazon' in expanded_url:
+                    if 'tag=' in expanded_url:
+                        affiliate_url = re.sub(r'tag=[^&]*', f'tag={AMAZON_AFFILIATE_TAG}', expanded_url)
+                    else:
+                        affiliate_url = f'{expanded_url}&tag={AMAZON_AFFILIATE_TAG}'
+                    match = re.search(r"(https?://[^\s]+)", message)
+                    if match:
+                        link = match.group(1)
+                        preceding_text = message[:match.start()]
+                        following_text = message[match.end():]
+                        reply_message += f"{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION if CAPTION else ''}"
+                     match_ = re.search(r"/dp/([A-Z0-9]{10})", affiliate_url)
+                     if match_:
+                         product_id = match_.group(1)
+                         db.set('amazon', product_id)
+            if FLIPKART_AFFILIATE_TAG:
+                if 'flipkart' in expanded_url:
+                    if 'affid=' in expanded_url:
+                        affiliate_url = re.sub(r'affid=[^&]*', f'affid={FLIPKART_AFFILIATE_TAG}', expanded_url)
+                    else:
+                        affiliate_url = f'{expanded_url}&affid={FLIPKART_AFFILIATE_TAG}'
+                    match = re.search(r"(https?://[^\s]+)", message)
+                    if match:
+                        link = match.group(1)
+                        preceding_text = message[:match.start()]
+                        following_text = message[match.end():]
+                        reply_message += f"{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION if CAPTION else ''}"
+                    match_ = re.search(r"/p/([a-zA-Z0-9]+)", affiliate_url)
+                    if match_:
+                        product_id = match_.group(1)
+                        db.set('flipkart', product_id)
     product_id = None
     if 'amazon' in reply_message:
         match = re.search(r"/dp/([A-Z0-9]{10})", affiliate_url)
@@ -107,7 +109,7 @@ async def handle_message(event):
         if existing_tag != FLIPKART_AFFILIATE_TAG:
             return
 
-    if reply_message and not 'amzn.to' in reply_message and not 'fkrt.it' in reply_message and not 't.me' in reply_message and not 'dl' in reply_message:
+    if reply_message and not 'amzn.to' in reply_message and not 'fkrt.it' in reply_message and not 't.me' in reply_message:
         try:
             await client.send_message(CHAT_ID, reply_message, link_preview=False)
             await asyncio.sleep(500)
