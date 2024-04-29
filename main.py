@@ -65,7 +65,7 @@ async def handle_message(event):
                     link = match.group(1)
                     preceding_text = message[:match.start()]
                     following_text = message[match.end():]
-                    reply_message += f'{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION}'
+                    reply_message += f"{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION if CAPTION else ''}"
                 match_ = re.search(r"/dp/([A-Z0-9]{10})", affiliate_url)
                 if match_:
                      product_id = match_.group(1)
@@ -80,7 +80,7 @@ async def handle_message(event):
                     link = match.group(1)
                     preceding_text = message[:match.start()]
                     following_text = message[match.end():]
-                    reply_message += f'{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION}'
+                    reply_message += f"{preceding_text}{affiliate_url}{following_text}\n\n{CAPTION if CAPTION else ''}"
                 match_ = re.search(r"/p/([a-zA-Z0-9]+)", affiliate_url)
                 if match_:
                     product_id = match_.group(1)
