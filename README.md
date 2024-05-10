@@ -1,4 +1,3 @@
-
 # 🤖 AffiliateBot
 
 Affiliate-Telegram-Bot is a Telegram bot designed to generate affiliate links for Amazon and Flipkart URLs, making it easier to monetize your content on telegram. 💰
@@ -43,7 +42,7 @@ You can customize the bot's behavior by modifying the `main.py` file:
 
 ## Generating Telethon Session String
 
-If you don't already have a Telethon session string, you can generate one on the [Telegram.tools](https://telegram.tools/session-string-generator#telethon,user). Once generated, copy the session string and use it as `SESSION` file for auto-forwarding messages.
+If you don't already have a Telethon session string, you can generate one on the [Telegram.tools](https://telegram.tools/session-string-generator#telethon,user). Once generated, copy the session string and use it as `SESSION` var for auto-forwarding messages.
 
 ## Contributing
 
@@ -52,4 +51,3 @@ Contributions are welcome! If you encounter any bugs or have suggestions for imp
 ## License
 
 This project is licensed under the [MIT License](LICENSE). 📝
-```
