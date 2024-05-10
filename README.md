@@ -1,4 +1,4 @@
-```markdown
+
 # 🤖 AffiliateBot
 
 Affiliate-Telegram-Bot is a Telegram bot designed to generate affiliate links for Amazon and Flipkart URLs, making it easier to monetize your content on telegram. 💰
