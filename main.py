@@ -3,7 +3,6 @@ from telethon.sync import TelegramClient, events
 import re, os
 from redislite import Redis
 import asyncio
-from os import environ, getenv
 import logging
 from telethon.sessions import StringSession
 from config import AUTH_USER_ID, API_ID, API_HASH, BOT_TOKEN, CHAT_ID, AMAZON_AFFILIATE_TAG, FLIPKART_AFFILIATE_TAG, CAPTION, SESSION, FROM_CHAT_IDS, TO_CHAT_ID
