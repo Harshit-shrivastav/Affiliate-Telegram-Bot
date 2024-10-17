@@ -9,6 +9,9 @@ Affiliate-Telegram-Bot is a Telegram bot designed to generate affiliate links fo
 ✨ Customizable captions for affiliate links  
 ✨ Automatic forwarding contents from other channels
 
+### 🆓 If you want a free bot hosting checkout this article here:
+https://github.com/Harshit-shrivastav/Free-Telegram-bot-hosting
+
 ## Getting Started
 
 To get started with Affiliate-Telegram-Bot, follow these steps:
